@@ -1,0 +1,2191 @@
+<!DOCTYPE html> 
+
+<html lang="pt-BR"> 
+
+ 
+
+<head> 
+
+ 
+
+  <meta charset="UTF-8"> 
+
+ 
+
+  <meta 
+
+    name="viewport" 
+
+    content="width=device-width, initial-scale=1.0" 
+
+  > 
+
+ 
+
+  <title>Biblioteca Escolar</title> 
+
+ 
+
+  <?!= include('Style'); ?> 
+
+ 
+
+</head> 
+
+ 
+
+<body> 
+
+ 
+
+  <!-- ===================================================== 
+
+       LOGIN 
+
+  ====================================================== --> 
+
+ 
+
+  <section id="telaLogin" class="login-container"> 
+
+ 
+
+    <div class="login-card"> 
+
+ 
+
+      <div class="logo"> 
+
+        📚 
+
+      </div> 
+
+ 
+
+      <h1>Biblioteca Escolar</h1> 
+
+ 
+
+      <p class="subtitle"> 
+
+        Sistema de gerenciamento da biblioteca 
+
+      </p> 
+
+ 
+
+      <form id="formLogin"> 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label for="loginEmail"> 
+
+            E-mail 
+
+          </label> 
+
+ 
+
+          <input 
+
+            type="email" 
+
+            id="loginEmail" 
+
+            placeholder="Digite seu e-mail" 
+
+            required 
+
+          > 
+
+ 
+
+        </div> 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label for="loginSenha"> 
+
+            Senha 
+
+          </label> 
+
+ 
+
+          <input 
+
+            type="password" 
+
+            id="loginSenha" 
+
+            placeholder="Digite sua senha" 
+
+            required 
+
+          > 
+
+ 
+
+        </div> 
+
+ 
+
+        <button 
+
+          type="submit" 
+
+          class="btn btn-primary btn-full" 
+
+        > 
+
+          Entrar 
+
+        </button> 
+
+ 
+
+      </form> 
+
+ 
+
+      <div 
+
+        id="loginMensagem" 
+
+        class="mensagem" 
+
+      ></div> 
+
+ 
+
+    </div> 
+
+ 
+
+  </section> 
+
+ 
+
+ 
+
+  <!-- ===================================================== 
+
+       SISTEMA 
+
+  ====================================================== --> 
+
+ 
+
+  <section 
+
+    id="sistema" 
+
+    class="app hidden" 
+
+  > 
+
+ 
+
+    <!-- SIDEBAR --> 
+
+ 
+
+    <aside class="sidebar"> 
+
+ 
+
+      <div class="sidebar-logo"> 
+
+ 
+
+        <span>📚</span> 
+
+ 
+
+        <div> 
+
+          <strong>Biblioteca</strong> 
+
+          <small>Escolar</small> 
+
+        </div> 
+
+ 
+
+      </div> 
+
+ 
+
+ 
+
+      <nav class="menu"> 
+
+ 
+
+        <button 
+
+          class="menu-item active" 
+
+          data-tela="dashboard" 
+
+        > 
+
+          🏠 
+
+          <span>Dashboard</span> 
+
+        </button> 
+
+ 
+
+        <button 
+
+          class="menu-item" 
+
+          data-tela="livros" 
+
+        > 
+
+          📚 
+
+          <span>Livros</span> 
+
+        </button> 
+
+ 
+
+        <button 
+
+          class="menu-item" 
+
+          data-tela="alunos" 
+
+        > 
+
+          👨‍🎓 
+
+          <span>Alunos</span> 
+
+        </button> 
+
+ 
+
+        <button 
+
+          class="menu-item" 
+
+          data-tela="professores" 
+
+        > 
+
+          👨‍🏫 
+
+          <span>Professores</span> 
+
+        </button> 
+
+ 
+
+        <button 
+
+          class="menu-item" 
+
+          data-tela="emprestimos" 
+
+        > 
+
+          📖 
+
+          <span>Empréstimos</span> 
+
+        </button> 
+
+ 
+
+        <button 
+
+          class="menu-item" 
+
+          data-tela="reservas" 
+
+        > 
+
+          🔖 
+
+          <span>Reservas</span> 
+
+        </button> 
+
+ 
+
+      </nav> 
+
+ 
+
+ 
+
+      <div class="sidebar-footer"> 
+
+ 
+
+        <button 
+
+          id="btnLogout" 
+
+          class="menu-item logout" 
+
+        > 
+
+          🚪 
+
+          <span>Sair</span> 
+
+        </button> 
+
+ 
+
+      </div> 
+
+ 
+
+    </aside> 
+
+ 
+
+ 
+
+    <!-- CONTEÚDO --> 
+
+ 
+
+    <main class="main-content"> 
+
+ 
+
+      <!-- HEADER --> 
+
+ 
+
+      <header class="topbar"> 
+
+ 
+
+        <div> 
+
+ 
+
+          <h2 id="tituloPagina"> 
+
+            Dashboard 
+
+          </h2> 
+
+ 
+
+          <span id="dataAtual"></span> 
+
+ 
+
+        </div> 
+
+ 
+
+        <div class="usuario-info"> 
+
+ 
+
+          <div class="avatar"> 
+
+            👤 
+
+          </div> 
+
+ 
+
+          <div> 
+
+ 
+
+            <strong id="nomeUsuario"> 
+
+              Usuário 
+
+            </strong> 
+
+ 
+
+            <small id="perfilUsuario"> 
+
+              Perfil 
+
+            </small> 
+
+ 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+      </header> 
+
+ 
+
+ 
+
+      <!-- ================================================= 
+
+           DASHBOARD 
+
+      ================================================== --> 
+
+ 
+
+      <section 
+
+        id="dashboard" 
+
+        class="tela" 
+
+      > 
+
+ 
+
+        <div class="cards"> 
+
+ 
+
+          <div class="card indicador"> 
+
+ 
+
+            <div class="indicador-icon"> 
+
+              📚 
+
+            </div> 
+
+ 
+
+            <div> 
+
+              <span>Total de livros</span> 
+
+              <strong id="totalLivros">0</strong> 
+
+            </div> 
+
+ 
+
+          </div> 
+
+ 
+
+ 
+
+          <div class="card indicador"> 
+
+ 
+
+            <div class="indicador-icon"> 
+
+              ✅ 
+
+            </div> 
+
+ 
+
+            <div> 
+
+              <span>Disponíveis</span> 
+
+              <strong id="livrosDisponiveis">0</strong> 
+
+            </div> 
+
+ 
+
+          </div> 
+
+ 
+
+ 
+
+          <div class="card indicador"> 
+
+ 
+
+            <div class="indicador-icon"> 
+
+              📖 
+
+            </div> 
+
+ 
+
+            <div> 
+
+              <span>Emprestados</span> 
+
+              <strong id="livrosEmprestados">0</strong> 
+
+            </div> 
+
+ 
+
+          </div> 
+
+ 
+
+ 
+
+          <div class="card indicador"> 
+
+ 
+
+            <div class="indicador-icon"> 
+
+              ⚠️ 
+
+            </div> 
+
+ 
+
+            <div> 
+
+              <span>Em atraso</span> 
+
+              <strong id="emprestimosAtrasados">0</strong> 
+
+            </div> 
+
+ 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="cards cards-secondary"> 
+
+ 
+
+          <div class="card simples"> 
+
+ 
+
+            <span>Alunos</span> 
+
+ 
+
+            <strong id="totalAlunos"> 
+
+              0 
+
+            </strong> 
+
+ 
+
+          </div> 
+
+ 
+
+          <div class="card simples"> 
+
+ 
+
+            <span>Professores</span> 
+
+ 
+
+            <strong id="totalProfessores"> 
+
+              0 
+
+            </strong> 
+
+ 
+
+          </div> 
+
+ 
+
+          <div class="card simples"> 
+
+ 
+
+            <span>Empréstimos ativos</span> 
+
+ 
+
+            <strong id="emprestimosAtivos"> 
+
+              0 
+
+            </strong> 
+
+ 
+
+          </div> 
+
+ 
+
+          <div class="card simples"> 
+
+ 
+
+            <span>Reservas ativas</span> 
+
+ 
+
+            <strong id="reservasAtivas"> 
+
+              0 
+
+            </strong> 
+
+ 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+      </section> 
+
+ 
+
+ 
+
+      <!-- ================================================= 
+
+           LIVROS 
+
+      ================================================== --> 
+
+ 
+
+      <section 
+
+        id="livros" 
+
+        class="tela hidden" 
+
+      > 
+
+ 
+
+        <div class="page-header"> 
+
+ 
+
+          <div> 
+
+ 
+
+            <h3>Livros</h3> 
+
+ 
+
+            <p> 
+
+              Gerencie o acervo da biblioteca. 
+
+            </p> 
+
+ 
+
+          </div> 
+
+ 
+
+          <button 
+
+            class="btn btn-primary" 
+
+            onclick="abrirModalLivro()" 
+
+          > 
+
+            + Novo livro 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="toolbar"> 
+
+ 
+
+          <input 
+
+            type="text" 
+
+            id="pesquisaLivro" 
+
+            placeholder="Pesquisar por título, autor, código ou ISBN..." 
+
+          > 
+
+ 
+
+          <button 
+
+            class="btn btn-secondary" 
+
+            onclick="carregarLivros()" 
+
+          > 
+
+            Atualizar 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="table-container"> 
+
+ 
+
+          <table> 
+
+ 
+
+            <thead> 
+
+ 
+
+              <tr> 
+
+                <th>Código</th> 
+
+                <th>Título</th> 
+
+                <th>Autor</th> 
+
+                <th>Categoria</th> 
+
+                <th>Quantidade</th> 
+
+                <th>Disponível</th> 
+
+                <th>Status</th> 
+
+                <th>Ações</th> 
+
+              </tr> 
+
+ 
+
+            </thead> 
+
+ 
+
+            <tbody id="tabelaLivros"></tbody> 
+
+ 
+
+          </table> 
+
+ 
+
+        </div> 
+
+ 
+
+      </section> 
+
+ 
+
+ 
+
+      <!-- ================================================= 
+
+           ALUNOS 
+
+      ================================================== --> 
+
+ 
+
+      <section 
+
+        id="alunos" 
+
+        class="tela hidden" 
+
+      > 
+
+ 
+
+        <div class="page-header"> 
+
+ 
+
+          <div> 
+
+ 
+
+            <h3>Alunos</h3> 
+
+ 
+
+            <p> 
+
+              Gerencie os alunos da escola. 
+
+            </p> 
+
+ 
+
+          </div> 
+
+ 
+
+          <button 
+
+            class="btn btn-primary" 
+
+            onclick="abrirModalAluno()" 
+
+          > 
+
+            + Novo aluno 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="table-container"> 
+
+ 
+
+          <table> 
+
+ 
+
+            <thead> 
+
+ 
+
+              <tr> 
+
+                <th>RA</th> 
+
+                <th>Nome</th> 
+
+                <th>Turma</th> 
+
+                <th>Série</th> 
+
+                <th>E-mail</th> 
+
+                <th>Status</th> 
+
+                <th>Ações</th> 
+
+              </tr> 
+
+ 
+
+            </thead> 
+
+ 
+
+            <tbody id="tabelaAlunos"></tbody> 
+
+ 
+
+          </table> 
+
+ 
+
+        </div> 
+
+ 
+
+      </section> 
+
+ 
+
+ 
+
+      <!-- ================================================= 
+
+           PROFESSORES 
+
+      ================================================== --> 
+
+ 
+
+      <section 
+
+        id="professores" 
+
+        class="tela hidden" 
+
+      > 
+
+ 
+
+        <div class="page-header"> 
+
+ 
+
+          <div> 
+
+ 
+
+            <h3>Professores</h3> 
+
+ 
+
+            <p> 
+
+              Gerencie os professores. 
+
+            </p> 
+
+ 
+
+          </div> 
+
+ 
+
+          <button 
+
+            class="btn btn-primary" 
+
+            onclick="abrirModalProfessor()" 
+
+          > 
+
+            + Novo professor 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="table-container"> 
+
+ 
+
+          <table> 
+
+ 
+
+            <thead> 
+
+ 
+
+              <tr> 
+
+                <th>Nome</th> 
+
+                <th>E-mail</th> 
+
+                <th>Telefone</th> 
+
+                <th>Disciplina</th> 
+
+                <th>Status</th> 
+
+                <th>Ações</th> 
+
+              </tr> 
+
+ 
+
+            </thead> 
+
+ 
+
+            <tbody id="tabelaProfessores"></tbody> 
+
+ 
+
+          </table> 
+
+ 
+
+        </div> 
+
+ 
+
+      </section> 
+
+ 
+
+ 
+
+      <!-- ================================================= 
+
+           EMPRÉSTIMOS 
+
+      ================================================== --> 
+
+ 
+
+      <section 
+
+        id="emprestimos" 
+
+        class="tela hidden" 
+
+      > 
+
+ 
+
+        <div class="page-header"> 
+
+ 
+
+          <div> 
+
+ 
+
+            <h3>Empréstimos</h3> 
+
+ 
+
+            <p> 
+
+              Controle os empréstimos e devoluções. 
+
+            </p> 
+
+ 
+
+          </div> 
+
+ 
+
+          <button 
+
+            class="btn btn-primary" 
+
+            onclick="abrirModalEmprestimo()" 
+
+          > 
+
+            + Novo empréstimo 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="table-container"> 
+
+ 
+
+          <table> 
+
+ 
+
+            <thead> 
+
+ 
+
+              <tr> 
+
+                <th>ID</th> 
+
+                <th>Livro</th> 
+
+                <th>Usuário</th> 
+
+                <th>Empréstimo</th> 
+
+                <th>Devolução prevista</th> 
+
+                <th>Status</th> 
+
+                <th>Ações</th> 
+
+              </tr> 
+
+ 
+
+            </thead> 
+
+ 
+
+            <tbody id="tabelaEmprestimos"></tbody> 
+
+ 
+
+          </table> 
+
+ 
+
+        </div> 
+
+ 
+
+      </section> 
+
+ 
+
+ 
+
+      <!-- ================================================= 
+
+           RESERVAS 
+
+      ================================================== --> 
+
+ 
+
+      <section 
+
+        id="reservas" 
+
+        class="tela hidden" 
+
+      > 
+
+ 
+
+        <div class="page-header"> 
+
+ 
+
+          <div> 
+
+ 
+
+            <h3>Reservas</h3> 
+
+ 
+
+            <p> 
+
+              Controle as reservas de livros. 
+
+            </p> 
+
+ 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="table-container"> 
+
+ 
+
+          <table> 
+
+ 
+
+            <thead> 
+
+ 
+
+              <tr> 
+
+                <th>ID</th> 
+
+                <th>Livro</th> 
+
+                <th>Tipo</th> 
+
+                <th>Usuário</th> 
+
+                <th>Data</th> 
+
+                <th>Status</th> 
+
+                <th>Ações</th> 
+
+              </tr> 
+
+ 
+
+            </thead> 
+
+ 
+
+            <tbody id="tabelaReservas"></tbody> 
+
+ 
+
+          </table> 
+
+ 
+
+        </div> 
+
+ 
+
+      </section> 
+
+ 
+
+    </main> 
+
+ 
+
+  </section> 
+
+ 
+
+ 
+
+  <!-- ===================================================== 
+
+       MODAL LIVRO 
+
+  ====================================================== --> 
+
+ 
+
+  <div 
+
+    id="modalLivro" 
+
+    class="modal hidden" 
+
+  > 
+
+ 
+
+    <div class="modal-card"> 
+
+ 
+
+      <div class="modal-header"> 
+
+ 
+
+        <h3 id="tituloModalLivro"> 
+
+          Novo livro 
+
+        </h3> 
+
+ 
+
+        <button 
+
+          class="btn-close" 
+
+          onclick="fecharModal('modalLivro')" 
+
+        > 
+
+          × 
+
+        </button> 
+
+ 
+
+      </div> 
+
+ 
+
+ 
+
+      <form id="formLivro"> 
+
+ 
+
+        <input 
+
+          type="hidden" 
+
+          id="livroId" 
+
+        > 
+
+ 
+
+        <div class="form-grid"> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Código</label> 
+
+            <input id="livroCodigo"> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>ISBN</label> 
+
+            <input id="livroISBN"> 
+
+          </div> 
+
+ 
+
+          <div class="form-group full"> 
+
+            <label>Título *</label> 
+
+            <input id="livroTitulo" required> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Autor *</label> 
+
+            <input id="livroAutor" required> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Editora</label> 
+
+            <input id="livroEditora"> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Ano</label> 
+
+            <input 
+
+              type="number" 
+
+              id="livroAno" 
+
+            > 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Categoria</label> 
+
+ 
+
+            <select id="livroCategoria"> 
+
+              <option value=""> 
+
+                Selecione 
+
+              </option> 
+
+            </select> 
+
+ 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Quantidade *</label> 
+
+            <input 
+
+              type="number" 
+
+              min="0" 
+
+              id="livroQuantidade" 
+
+              required 
+
+            > 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Localização</label> 
+
+            <input id="livroLocalizacao"> 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="modal-footer"> 
+
+ 
+
+          <button 
+
+            type="button" 
+
+            class="btn btn-secondary" 
+
+            onclick="fecharModal('modalLivro')" 
+
+          > 
+
+            Cancelar 
+
+          </button> 
+
+ 
+
+          <button 
+
+            type="submit" 
+
+            class="btn btn-primary" 
+
+          > 
+
+            Salvar 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+      </form> 
+
+ 
+
+    </div> 
+
+ 
+
+  </div> 
+
+ 
+
+ 
+
+  <!-- ===================================================== 
+
+       MODAL ALUNO 
+
+  ====================================================== --> 
+
+ 
+
+  <div 
+
+    id="modalAluno" 
+
+    class="modal hidden" 
+
+  > 
+
+ 
+
+    <div class="modal-card"> 
+
+ 
+
+      <div class="modal-header"> 
+
+ 
+
+        <h3>Aluno</h3> 
+
+ 
+
+        <button 
+
+          class="btn-close" 
+
+          onclick="fecharModal('modalAluno')" 
+
+        > 
+
+          × 
+
+        </button> 
+
+ 
+
+      </div> 
+
+ 
+
+ 
+
+      <form id="formAluno"> 
+
+ 
+
+        <input 
+
+          type="hidden" 
+
+          id="alunoId" 
+
+        > 
+
+ 
+
+        <div class="form-grid"> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>RA *</label> 
+
+            <input id="alunoRA" required> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Nome *</label> 
+
+            <input id="alunoNome" required> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Turma</label> 
+
+            <input id="alunoTurma"> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Série</label> 
+
+            <input id="alunoSerie"> 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>E-mail</label> 
+
+            <input 
+
+              type="email" 
+
+              id="alunoEmail" 
+
+            > 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Telefone</label> 
+
+            <input id="alunoTelefone"> 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="modal-footer"> 
+
+ 
+
+          <button 
+
+            type="button" 
+
+            class="btn btn-secondary" 
+
+            onclick="fecharModal('modalAluno')" 
+
+          > 
+
+            Cancelar 
+
+          </button> 
+
+ 
+
+          <button 
+
+            type="submit" 
+
+            class="btn btn-primary" 
+
+          > 
+
+            Salvar 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+      </form> 
+
+ 
+
+    </div> 
+
+ 
+
+  </div> 
+
+ 
+
+ 
+
+  <!-- ===================================================== 
+
+       MODAL PROFESSOR 
+
+  ====================================================== --> 
+
+ 
+
+  <div 
+
+    id="modalProfessor" 
+
+    class="modal hidden" 
+
+  > 
+
+ 
+
+    <div class="modal-card"> 
+
+ 
+
+      <div class="modal-header"> 
+
+ 
+
+        <h3>Professor</h3> 
+
+ 
+
+        <button 
+
+          class="btn-close" 
+
+          onclick="fecharModal('modalProfessor')" 
+
+        > 
+
+          × 
+
+        </button> 
+
+ 
+
+      </div> 
+
+ 
+
+ 
+
+      <form id="formProfessor"> 
+
+ 
+
+        <input 
+
+          type="hidden" 
+
+          id="professorId" 
+
+        > 
+
+ 
+
+        <div class="form-grid"> 
+
+ 
+
+          <div class="form-group full"> 
+
+            <label>Nome *</label> 
+
+            <input 
+
+              id="professorNome" 
+
+              required 
+
+            > 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>E-mail</label> 
+
+            <input 
+
+              type="email" 
+
+              id="professorEmail" 
+
+            > 
+
+          </div> 
+
+ 
+
+          <div class="form-group"> 
+
+            <label>Telefone</label> 
+
+            <input id="professorTelefone"> 
+
+          </div> 
+
+ 
+
+          <div class="form-group full"> 
+
+            <label>Disciplina</label> 
+
+            <input id="professorDisciplina"> 
+
+          </div> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="modal-footer"> 
+
+ 
+
+          <button 
+
+            type="button" 
+
+            class="btn btn-secondary" 
+
+            onclick="fecharModal('modalProfessor')" 
+
+          > 
+
+            Cancelar 
+
+          </button> 
+
+ 
+
+          <button 
+
+            type="submit" 
+
+            class="btn btn-primary" 
+
+          > 
+
+            Salvar 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+      </form> 
+
+ 
+
+    </div> 
+
+ 
+
+  </div> 
+
+ 
+
+ 
+
+  <!-- ===================================================== 
+
+       MODAL EMPRÉSTIMO 
+
+  ====================================================== --> 
+
+ 
+
+  <div 
+
+    id="modalEmprestimo" 
+
+    class="modal hidden" 
+
+  > 
+
+ 
+
+    <div class="modal-card"> 
+
+ 
+
+      <div class="modal-header"> 
+
+ 
+
+        <h3>Novo empréstimo</h3> 
+
+ 
+
+        <button 
+
+          class="btn-close" 
+
+          onclick="fecharModal('modalEmprestimo')" 
+
+        > 
+
+          × 
+
+        </button> 
+
+ 
+
+      </div> 
+
+ 
+
+ 
+
+      <form id="formEmprestimo"> 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label>Livro *</label> 
+
+ 
+
+          <select 
+
+            id="emprestimoLivro" 
+
+            required 
+
+          > 
+
+            <option value=""> 
+
+              Selecione o livro 
+
+            </option> 
+
+          </select> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label>Tipo de usuário *</label> 
+
+ 
+
+          <select 
+
+            id="emprestimoTipo" 
+
+            required 
+
+          > 
+
+ 
+
+            <option value=""> 
+
+              Selecione 
+
+            </option> 
+
+ 
+
+            <option value="ALUNO"> 
+
+              Aluno 
+
+            </option> 
+
+ 
+
+            <option value="PROFESSOR"> 
+
+              Professor 
+
+            </option> 
+
+ 
+
+          </select> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label>Usuário *</label> 
+
+ 
+
+          <select 
+
+            id="emprestimoUsuario" 
+
+            required 
+
+          > 
+
+ 
+
+            <option value=""> 
+
+              Selecione 
+
+            </option> 
+
+ 
+
+          </select> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label>Data prevista para devolução</label> 
+
+ 
+
+          <input 
+
+            type="date" 
+
+            id="emprestimoData" 
+
+          > 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="form-group"> 
+
+ 
+
+          <label>Observação</label> 
+
+ 
+
+          <textarea 
+
+            id="emprestimoObservacao" 
+
+            rows="3" 
+
+          ></textarea> 
+
+ 
+
+        </div> 
+
+ 
+
+ 
+
+        <div class="modal-footer"> 
+
+ 
+
+          <button 
+
+            type="button" 
+
+            class="btn btn-secondary" 
+
+            onclick="fecharModal('modalEmprestimo')" 
+
+          > 
+
+            Cancelar 
+
+          </button> 
+
+ 
+
+          <button 
+
+            type="submit" 
+
+            class="btn btn-primary" 
+
+          > 
+
+            Confirmar empréstimo 
+
+          </button> 
+
+ 
+
+        </div> 
+
+ 
+
+      </form> 
+
+ 
+
+    </div> 
+
+ 
+
+  </div> 
+
+ 
+
+ 
+
+  <?!= include('Código'); ?> 
+
+ 
+
+</body> 
+
+ 
+
+</html> 
+
+ 
